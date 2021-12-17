@@ -1,5 +1,4 @@
-//public class ProfesorTP implements TeacherInterface {
-    public class ProfesorTP implements Teacher {
+public class ProfesorTP implements Teacher {
     private String _Nombre;
     private int _Tipo;
     private int _salarioBaseMensual =2000;

@@ -1,4 +1,3 @@
-//public class ProfesorTC implements TeacherInterface {
 public class ProfesorTC implements Teacher {
     private String _Nombre;
     private int _Tipo;

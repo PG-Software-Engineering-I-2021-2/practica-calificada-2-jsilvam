@@ -1,4 +1,3 @@
-//public class Administrativo implements TeacherInterface {
 public class Administrativo implements Teacher {
     private String _Nombre;
     private int _Tipo;

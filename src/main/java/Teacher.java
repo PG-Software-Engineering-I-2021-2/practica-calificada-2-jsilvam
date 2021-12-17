@@ -1,4 +1,3 @@
-//interface TeacherInterface {
 interface Teacher {
     
     public String get_Nombre();
