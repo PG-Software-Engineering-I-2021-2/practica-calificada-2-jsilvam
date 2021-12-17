@@ -7,7 +7,6 @@ import java.util.List;
 
 
 public class PrincipalTest {
-
     @Test
     void fail_given_there_are_no_exams() {
         Principal studentGradeCalculator = new Principal(2019);
@@ -23,7 +22,7 @@ public class PrincipalTest {
         final List<Pair<Integer, Float>> examsGrades              = List.of(new Pair<>(100, 5f));
         final boolean                    hasReachedMinimumClasses = true;
 
-        Assert.assertEquals(6, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
+        Assert.assertEquals(5, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
     }
 
     @Test
@@ -44,7 +43,7 @@ public class PrincipalTest {
         );
         final boolean hasReachedMinimumClasses = true;
 
-        Assert.assertEquals(6, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
+        Assert.assertEquals(5, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
     }
 
     @Test
@@ -57,7 +56,7 @@ public class PrincipalTest {
         );
         final boolean hasReachedMinimumClasses = true;
 
-        Assert.assertEquals(5.5f, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
+        Assert.assertEquals(4.5f, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
     }
 
     // hasReachedMinimumClasses
@@ -150,7 +149,7 @@ public class PrincipalTest {
         final List<Pair<Integer, Float>> examsGrades              = List.of(new Pair<>(100, 9.8f));
         final boolean                    hasReachedMinimumClasses = true;
 
-        Assert.assertEquals(10.0f, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
+        Assert.assertEquals(9.8f, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
     }
 
     @Test
@@ -161,8 +160,6 @@ public class PrincipalTest {
         final boolean                    hasReachedMinimumClasses = true;
 
         Assert.assertEquals(6, studentGradeCalculator.calculateGrades(examsGrades, hasReachedMinimumClasses));
-
-
     }
 
     @Test
@@ -176,9 +173,24 @@ public class PrincipalTest {
     }
 
     @Test
-    void pruebaImprimirResultado(){
+    void print_teacher_list_that_agree_with_extra_point(){
         Principal studentGradeCalculator = new Principal(2020);
-        studentGradeCalculator.imprimirListado();
+        Assert.assertEquals(1, studentGradeCalculator.printTeacherAgreeWithExtraPoint(2018));
+        Assert.assertEquals(0, studentGradeCalculator.printTeacherAgreeWithExtraPoint(2019));
+        Assert.assertEquals(0, studentGradeCalculator.printTeacherAgreeWithExtraPoint(2020));        
+    }
 
+    @Test
+    void print_teacher_list_that_agree_with_extra_point_and_is_ProfesorTP(){
+        Principal studentGradeCalculator = new Principal(2020);
+        Assert.assertEquals(1, studentGradeCalculator.printTeacherAgreeWithExtraPoint(2018));
+    }
+
+    @Test
+    void print_quantity_of_ProfesorTC(){
+        Principal studentGradeCalculator = new Principal(2020);
+        Assert.assertEquals(1, studentGradeCalculator.countTeacherProfesorTC(2018));
+        Assert.assertEquals(3, studentGradeCalculator.countTeacherProfesorTC(2019));
+        Assert.assertEquals(3, studentGradeCalculator.countTeacherProfesorTC(2020));
     }
 }

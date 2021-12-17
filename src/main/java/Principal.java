@@ -3,23 +3,33 @@ import java.util.List;
 import java.util.Map;
 
 public class Principal {
+    final Integer MAX_WEIGHT_SUM = 100;
+
     final private Map<Integer, List<Pair<Teacher, Boolean>>> allYearsTeachers = Map.ofEntries(
-            new AbstractMap.SimpleImmutableEntry<>(
-                    2020,
-                    List.of(
-                            new Pair<>( new Teacher(1,"Josefina"), true),
-                            new Pair<>( new Teacher(1,"Edonisio"), true),
-                            new Pair<>( new Teacher(1,"Edufasio"), true)
-                    )
-            ),
-            new AbstractMap.SimpleImmutableEntry<>(
-                    2019,
-                    List.of(
-                            new Pair<>( new Teacher(1,"Eduarda"), false),
-                            new Pair<>( new Teacher(1,"Abelardo"), true),
-                            new Pair<>( new Teacher(1,"Francisca"), false)
-                    )
+        new AbstractMap.SimpleImmutableEntry<>(
+            2020,
+            List.of(
+                    new Pair<>( new ProfesorTC(1,"Josefina"), true),
+                    new Pair<>( new ProfesorTC(1,"Edonisio"), true),
+                    new Pair<>( new ProfesorTC(1,"Edufasio"), false)
             )
+        ),
+        new AbstractMap.SimpleImmutableEntry<>(
+                2019,
+                List.of(
+                        new Pair<>( new ProfesorTC(1,"Eduarda"), false),
+                        new Pair<>( new ProfesorTC(1,"Abelardo"), false),
+                        new Pair<>( new ProfesorTC(1,"Francisca"), false)
+                )
+        ),
+        new AbstractMap.SimpleImmutableEntry<>(
+                2018,
+                List.of(
+                        new Pair<>( new ProfesorTP(0,"Alvaro"), true),
+                        new Pair<>( new ProfesorTC(1,"Jonathan"), true),
+                        new Pair<>( new Administrativo(2,"Maor"), true)
+                )
+        )
     );
     private final int yearToCalculate;
 
@@ -27,15 +37,11 @@ public class Principal {
         this.yearToCalculate = yearToCalculate;
     }
     public float calculateGrades(final List<Pair<Integer, Float>> examsStudents, final boolean hasReachedMinimumClasses) {
-
-
         if (examsStudents.isEmpty()) {
             return 0f;
         }
-
         float gradesSum       = getGradesSum(examsStudents);
         int   gradesWeightSum = getGradesWeightSum(examsStudents);
-
 
         return gradeVerification(hasReachedMinimumClasses, gradesSum, gradesWeightSum);
     }
@@ -51,14 +57,18 @@ public class Principal {
     private float getGradesSum(List<Pair<Integer, Float>> examsStudents) {
         float gradesSum = 0f;
         for (Pair<Integer, Float> examGrade : examsStudents) {
-            gradesSum += (examGrade.first() * examGrade.second() / 100);
+            gradesSum += (examGrade.first() * examGrade.second() / MAX_WEIGHT_SUM);
         }
         return gradesSum;
     }
 
 
     private float gradeVerification(boolean hasReachedMinimumClasses, float gradesSum, int gradesWeightSum) {
-        if (gradesWeightSum == 100) {
+        if (gradesWeightSum > MAX_WEIGHT_SUM){
+            return -1f;
+        }
+        
+        if (gradesWeightSum == MAX_WEIGHT_SUM ){ 
             if (hasReachedMinimumClasses) {
                 if (isHasToIncreaseOneExtraPoint()) {
                     return Float.min(10f, gradesSum + 1);
@@ -68,11 +78,8 @@ public class Principal {
             } else {
                 return 0f;
             }
-        } else if (gradesWeightSum > 100) {
-            return -1f;
-        } else {
-            return -2f;
         }
+        return -2f;
     }
 
     private boolean isHasToIncreaseOneExtraPoint() {
@@ -93,12 +100,34 @@ public class Principal {
         return hasToIncreaseOneExtraPoint;
     }
 
-    public void imprimirListado(){
+    public int printTeacherAgreeWithExtraPoint(int year){
+        int listLength=0;
         for (Map.Entry<Integer, List<Pair<Teacher, Boolean>>> yearlyTeachers : allYearsTeachers.entrySet()){
-            for (Pair<Teacher, Boolean>teacher:yearlyTeachers.getValue()) {
-                if(teacher.second()) System.out.println(teacher.first().get_Nombre());
+            if (yearlyTeachers.getKey() == year){
+                for (Pair<Teacher, Boolean>teacher:yearlyTeachers.getValue()) {
+                    if((teacher.second()) && (teacher.first().get_Tipo()==0)) {
+                        System.out.println(teacher.first().get_Nombre());
+                        listLength++;
+                    }
+                }
             }
         }
+        return listLength;
+    }
+
+    public int countTeacherProfesorTC(int year){
+        int listLength=0;
+        for (Map.Entry<Integer, List<Pair<Teacher, Boolean>>> yearlyTeachers : allYearsTeachers.entrySet()){
+            if (yearlyTeachers.getKey() == year){
+                for (Pair<Teacher, Boolean>teacher:yearlyTeachers.getValue()) {
+                    if((teacher.first().get_Tipo()==1)) {
+                        System.out.println(teacher.first().get_Nombre());
+                        listLength++;
+                    }
+                }
+            }
+        }
+        return listLength;
     }
 
     public static void main(String[] args) {
